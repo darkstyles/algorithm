@@ -3,17 +3,26 @@ var inputs = require('fs').readFileSync(path.resolve('Recursive/14501.txt'), 'ut
 
 
 var work = function (day, sum) {
-    if (day > quitDay - 1) {
+    if (day > quitDay) {
         return;
     }
 
-    if (day === quitDay - 1) {
+    if (day === quitDay) {
         return sum
     }
 
     var meeting = schedule[day];
-    work(day + meeting.day, sum + meeting.incentive);
-    work(day + 1, sum);
+    var currSum = work(day + meeting.day, sum + meeting.incentive);
+    if (!currSum) {
+        currSum = sum;
+    }
+
+    var nextSum = work(day + 1, sum);
+    if (!nextSum) {
+        nextSum = sum;
+    }
+
+    return Math.max(currSum, nextSum);
 };
 
 var schedule = [];
@@ -28,4 +37,4 @@ for (ix = 1; ix < quitDay + 1; ix++) {
     })
 }
 
-work(0, 0);
+console.log(work(0, 0));

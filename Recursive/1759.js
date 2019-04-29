@@ -28,13 +28,12 @@ var makePassword = function (makeLength, characters, password, index) {
         makePassword(makeLength, characters, password + characters[index], index + 1);
         makePassword(makeLength, characters, password, index + 1);
     }
-
 };
 
 var splits = inputs[0].split(' ');
 var passwordLength = parseInt(splits[0]);
 var stringLength = parseInt(splits[1]);
-var inputString = inputs[1].split(' ');
+var inputString = inputs[1].split(' ').sort();
 
 if (passwordLength < 3) {
     passwordLength = 3;

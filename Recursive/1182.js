@@ -11,7 +11,7 @@ var partSum = function (numbers, goal, index, sum) {
         }
     }
 
-    return partSum(numbers, goal, index + 1, sum + numbers[index + 1]) +
+    return partSum(numbers, goal, index + 1, sum + numbers[index]) +
         partSum(numbers, goal, index + 1, sum);
 };
 
