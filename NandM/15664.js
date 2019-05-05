@@ -1,0 +1,68 @@
+var path = require('path');
+var inputs = require('fs').readFileSync(path.resolve('NandM/15663.txt'), 'utf8').toString().trim().split('\n');
+
+var numberN = parseInt(inputs[0].split(' ')[0]);
+var numberM = parseInt(inputs[0].split(' ')[1]);
+var numbers = inputs[1].split(' ').map(function (number) {
+    return parseInt(number);
+}).sort(function (a, b) { return a - b });
+var seq = [], cnt = [], logText = '';
+
+var duplicate = function () {
+    var ix, index = 0;
+    var count = 1, prevValue = numbers[0];
+    var result = [];
+
+    for (ix = 1; ix < numbers.length; ix++) {
+        if (prevValue === numbers[ix]) {
+            count += 1;
+        } else {
+            result[index] = prevValue;
+            cnt[index] = count;
+            prevValue = numbers[ix];
+            index += 1;
+            count = 1;
+        }
+    }
+
+    result[index] = prevValue;
+    cnt[index] = count;
+
+    return result;
+};
+
+var makeSeq = function (index, start, n, m) {
+    var ix;
+    if (index === m) {
+        logText += seq.map(function (itemIndex) {
+            return numbers[itemIndex];
+        }).join(' ') + '\n';
+        return;
+    }
+
+    for (ix = start; ix < n; ix++) {
+        if (cnt[ix] > 0) {
+            cnt[ix] -= 1;
+            seq[index] = ix;
+            makeSeq(index + 1, ix, n, m);
+            cnt[ix] += 1;
+        }
+    }
+};
+
+if (numberM < 1) {
+    numberM = 1;
+}
+
+if (numberN < numberM) {
+    numberN = numberM;
+}
+
+if (numberN > 8) {
+    numberN = 8;
+}
+
+numbers = duplicate();
+makeSeq(0, 0, numberN, numberM);
+
+console.log(logText);
